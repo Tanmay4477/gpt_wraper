@@ -14,7 +14,7 @@ settings = Settings()
 app = FastAPI()
 
 client = anthropic.Anthropic(
-    api_key="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"
+    api_key=settings.api_key
 )
 
 @app.get("/")
