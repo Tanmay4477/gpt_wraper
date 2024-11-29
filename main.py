@@ -2,16 +2,19 @@ import uvicorn
 from fastapi import FastAPI
 import anthropic
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class Settings(BaseSettings):
+    api_key: str = 'api'
+    model_config = SettingsConfigDict(env_file=".env")
 
 class MessageSchema(BaseModel):
     message: str
 
-class Settings(BaseSettings):
-    api_key: str = "API"
+app = FastAPI()
 
 settings = Settings()
-app = FastAPI()
+
 
 client = anthropic.Anthropic(
     api_key=settings.api_key
@@ -37,9 +40,6 @@ def template(message: MessageSchema):
     print(response.content)
     return {"message": response.content[0].text}
 
-@app.post("/chat")
-def chat():
-    return {"message": "New Chat"}
 
 if __name__ == "__main__":
     uvicorn.run("main:app")
