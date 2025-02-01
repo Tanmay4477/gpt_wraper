@@ -1,3 +1,4 @@
 .gpt_wrap
 __pycache__
 .env
+.gpt
